@@ -31,12 +31,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // const FOUR_HOURS = 4 * 60 * 60 * 1000;
     const FOUR_HOURS = 10000;
-    // const INCREMENT = 11.52;
     const INCREMENT = 100;
-    // const INACTIVITY_LIMIT = 8 * 60 * 60 * 1000; // 8 saat
-    const INACTIVITY_LIMIT = 60000;
+    const INACTIVITY_LIMIT = 60000; // 12 saat
+    // const FOUR_HOURS = 4 * 60 * 60 * 1000;
+    // const INCREMENT = 11.52;
+    // const INACTIVITY_LIMIT = 12 * 60 * 60 * 1000; // 12 saat
     let interval = null;
     let inactivityTimeout = null;
 
