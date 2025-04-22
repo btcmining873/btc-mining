@@ -8,7 +8,7 @@ const INCREMENT = 11.52;
 const FOUR_HOURS = 4 * 60 * 60 * 1000; // 4 saat (gerçek değer)
 const INACTIVITY_LIMIT = 12 * 60 * 60 * 1000; // 12 saat
 
-// Düzenli olarak her 5 dakikada bir çalışacak fonksiyon (4 saatlik periyotları kontrol eder)
+// Düzenli olarak her 5 dakikada bir çalışacak fonksiyon
 exports.updateMinerBalances = functions
   .runWith({
     timeoutSeconds: 300, // Fonksiyonun maksimum çalışma süresi
@@ -79,7 +79,7 @@ exports.updateMinerBalances = functions
             .doc(doc.id)
             .update({
               balance: admin.firestore.FieldValue.increment(totalIncrement),
-              lastUpdateTime: now,
+              lastUpdateTime: lastUpdateTime + periodsElapsed * FOUR_HOURS,
             })
         );
       } else {
