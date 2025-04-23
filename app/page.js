@@ -176,19 +176,6 @@ export default function Home() {
     });
   };
 
-  const resetBalance = async () => {
-    if (!deviceId) return;
-
-    const minerRef = doc(db, "miners", deviceId);
-    await updateDoc(minerRef, {
-      balance: 0,
-      isMining: false,
-      isMiningPaused: false,
-      lastUpdateTime: Date.now(),
-      lastActive: Date.now(),
-    });
-  };
-
   return (
     <div className="max-w-6xl mx-auto p-8">
       <InAppBrowserWarning />
@@ -249,14 +236,6 @@ export default function Home() {
               Mining Aktif
             </div>
           )}
-          <motion.button
-            className="bg-red-400 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-full text-lg transition-colors mt-4 md:mt-0 md:ml-4"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={resetBalance}
-          >
-            Bakiyeyi Sıfırla
-          </motion.button>
         </div>
         <div className="md:w-1/2 flex justify-center">
           <motion.div
