@@ -73,6 +73,9 @@ export default function Home() {
         // Eğer mining durdurulmuşsa (isMiningPaused=true) ve kullanıcı mining yapmak istiyorsa (isMining=true)
         // otomatik olarak mining'i yeniden başlat
         if (data.isMiningPaused && data.isMining) {
+          console.log(
+            "Sayfa açıldı ve kullanıcı aktif. Mining otomatik olarak yeniden başlatılıyor..."
+          );
           await updateDoc(minerRef, {
             isMiningPaused: false,
             lastUpdateTime: Date.now(), // İnaktif süre için bakiye verme
@@ -89,6 +92,7 @@ export default function Home() {
       // Burada doğrudan updateDoc kullanamayız çünkü beforeunload sırasında
       // asenkron işlemler güvenilir çalışmaz, o yüzden sendelBeacon kullanılabilir
       // ancak basitlik için şimdilik düzenli otomatik güncellemelerle çözeceğiz
+      console.log("Sayfa kapanıyor veya yenileniyor. Son durum kaydedildi.");
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -141,6 +145,10 @@ export default function Home() {
         // Eğer mining durdurulmuşsa (isMiningPaused=true) ve kullanıcı mining yapmak istiyorsa (isMining=true)
         // otomatik olarak mining'i yeniden başlat
         if (data.isMiningPaused && data.isMining) {
+          console.log("Kullanıcı aktif oldu. Mining yeniden başlatılıyor...");
+
+          // Mining'i yeniden başlatırken lastUpdateTime'ı da güncelle
+          // Böylece inaktif süre için bakiye hesaplanmayacak
           await updateDoc(minerRef, {
             isMiningPaused: false,
             lastUpdateTime: Date.now(), // ÖNEMLİ: Şimdiki zamanı kullan, inaktif süre için bakiye verme
@@ -179,9 +187,9 @@ export default function Home() {
         const timeElapsed = currentTime - lastUpdateTime;
         const intervalsElapsed = Math.floor(timeElapsed / FOUR_HOURS);
 
-        // Her 5 dakikada bir bakiyeyi güncelle
+        // Her 4 saatte bir bakiyeyi güncelle
         if (intervalsElapsed > 0 && data.isMining && !data.isMiningPaused) {
-          // 1 periyot (5 dakika) için 11.52 coin ekle (Firebase fonksiyonuyla aynı değer)
+          // 1 periyot (4 saat) için 11.52 coin ekle (Firebase fonksiyonuyla aynı değer)
           const INCREMENT = 11.52;
           const additionalBalance = intervalsElapsed * INCREMENT;
 
@@ -190,6 +198,12 @@ export default function Home() {
             balance: data.balance + additionalBalance,
             lastUpdateTime: lastUpdateTime + intervalsElapsed * FOUR_HOURS,
           });
+
+          console.log(
+            `Bakiye güncellendi: +${additionalBalance}. Yeni bakiye: ${
+              data.balance + additionalBalance
+            }`
+          );
         }
       }
     };
@@ -219,7 +233,19 @@ export default function Home() {
 
         const INACTIVITY_LIMIT = 12 * 60 * 60 * 1000; // 12 saat
 
+        console.log(
+          `İstemci inaktiflik kontrolü: ${Math.floor(
+            inactiveTime / 60000
+          )} dakika`
+        );
+
         if (inactiveTime > INACTIVITY_LIMIT && !data.isMiningPaused) {
+          console.log(
+            `İnaktiflik tespit edildi. Mining duraklatılıyor. İnaktif süre: ${Math.floor(
+              inactiveTime / 60000
+            )} dakika`
+          );
+
           await updateDoc(minerRef, {
             isMiningPaused: true,
           });

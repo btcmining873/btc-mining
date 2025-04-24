@@ -85,14 +85,16 @@ exports.updateMinerBalances = functions
             })
         );
       }
-      // Kullanıcı inaktifse mining'i duraklat
+      // Kullanıcı inaktifse mining'i duraklat ve bakiye güncellemeyi atla
       else if (
         inactiveTime > INACTIVITY_LIMIT &&
         !minerData.isMiningPaused &&
         minerData.isMining
       ) {
         console.log(
-          `${doc.id} inaktif olduğu için mining duraklatılıyor. İnaktif süre: ${
+          `${
+            doc.id
+          } inaktif olduğu için mining duraklatılıyor ve bakiye güncellenmiyor. İnaktif süre: ${
             inactiveTime / 1000 / 60
           } dakika`
         );
