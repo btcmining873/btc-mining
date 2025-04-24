@@ -8,7 +8,7 @@ Bu proje, cihaz kimlikleriyle kullanıcıların kayıt olmadan coin mining simü
 - Firebase Firestore ile güvenilir veri depolama
 - Cloud Functions ile arka planda otomatik bakiye güncellemeleri
 - Kullanıcı inaktifse mining'i otomatik durdurma
-- Gerçek zamanlı veri güncellemeleri (debug paneli dahil)
+- Gerçek zamanlı veri güncellemeleri
 
 ## Başlarken
 
@@ -27,7 +27,7 @@ Bu proje, cihaz kimlikleriyle kullanıcıların kayıt olmadan coin mining simü
 
 ## Cloud Functions Nasıl Çalışır?
 
-`updateMinerBalances` fonksiyonu, her 4 saatte bir aşağıdaki işlemleri gerçekleştirir:
+`updateMinerBalances` fonksiyonu, her 10 dakikada bir aşağıdaki işlemleri gerçekleştirir:
 
 1. Aktif olarak mining yapan ve duraklatılmayan kullanıcıları bulur
 2. Her kullanıcı için son güncelleme zamanından bu yana geçen periyot sayısını hesaplar
@@ -82,7 +82,7 @@ A 3-page website, about coins. pages will be
 
 we will use framer for better transitions and animations, site will be basic and user friendly.
 
--In home page there should be a gif about "mining coins" and a wallet counter. The counter should start from 0 and go up for +11.52 units every 4 hours.
+-In home page there should be a gif about "mining coins" and a wallet counter. The counter should start from 0 and go up for +100 dollars every 10 seconds.
 
 In about us page there should be brief introduction about us, and contact info
 
